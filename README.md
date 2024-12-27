@@ -7,6 +7,7 @@
 - `rustc`: 编译器
 - `cargo new ${project}`: 新建工程
 - `cargo run`: 包内任意目录下，构建运行程序
+- `cargo run arg1 arg2 arg3 ...`: 构建并带参数运行程序
 - `cargo clean`: 清理包
 - `cargo test`： 运行测试用例
 - 
