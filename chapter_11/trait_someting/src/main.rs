@@ -138,6 +138,69 @@ fn define_trait() {
     let mut serializer = serde_json::Serializer::new(hashmap);
     config.serialize(&mut serializer).unwrap();  // 特型实现的方法，如果想使用，该方法必须在作用域内，.serialize是serde_json为rust数据类型实现的序列化方法
 
+    // 特型中的Self
+    #[derive(Copy, Clone)]
+    struct CherryTree {
+
+    }
+
+    #[derive(Copy, Clone)]
+    struct Mammoth {
+        
+    }
+
+    pub trait Spliceable {
+        fn splice(&self, other: &Self) -> Self;
+    }
+
+    impl Spliceable for CherryTree {
+        fn splice(&self, other: &Self) -> Self {  // Self 为 CherryTree 别名
+            *other
+        }
+    }
+
+    impl Spliceable for Mammoth {
+        fn splice(&self, other: &Self) -> Self {  // Self 为 Mammoth 别名
+            *other
+        }
+    }
+
+    // 子特型
+    struct Direction {
+        x: i32,
+        y: i32,
+        height: i32,
+    }
+    trait Creature: Visiable {  // 每个实现 Creature 特型的类型，也得实现 Visiable 特型
+        fn position(&self) -> (i32, i32);
+
+        fn facing(&self) -> Direction;
+    }
+    
+
+    impl Visiable for Direction {
+        fn draw(&self, canvas: &mut Canvas) {
+            for y in self.y - self.height - 1 ..self.y {
+                canvas.write_at(self.x, y, '#');
+            }
+            canvas.write_at(self.x, self.y, '#');
+        }
+
+        fn hit_test(&self, x: i32, y: i32) -> bool {
+            self.x == x && self.y - self.height - 1 <= y && y <= self.y
+        }
+    }
+
+    impl Creature for Direction {
+        fn position(&self) -> (i32, i32) {
+            (0, 0)
+        }
+
+        fn facing(&self) -> Direction {
+            Direction{x: 0, y: 0, height: 0 }
+        }
+    }
+
 }
 
 #[allow(unused_variables, dead_code)]
@@ -149,3 +212,4 @@ fn completely_limit_call() {
     let h4 = <str as ToString>::to_string(hell0);  // 完全限定调用
     assert!(h1 == h2 && h2 == h3 && h3 == h4);  // 四种方法完全一致
 }
+

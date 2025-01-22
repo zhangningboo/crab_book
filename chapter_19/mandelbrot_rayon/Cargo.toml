@@ -1,0 +1,9 @@
+[package]
+name = "mandelbrot_rayon"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+image = "0.13.0"  # 图像
+num = "0.4.3"  # 复数运算
+rayon = "1.10.0"
